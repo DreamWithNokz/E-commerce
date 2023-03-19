@@ -16,6 +16,6 @@ const ImageThumbnails = [
   ImageThumbnail4,
 ];
 
-export const BigImage = [Image1, Image2, Image3];
+export const BigImage = [Image1, Image2, Image3, Image4];
 
 export default ImageThumbnails;

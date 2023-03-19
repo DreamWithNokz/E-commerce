@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, SetStateAction } from 'react';
 import iconcart from '../assets/icon-cart.svg';
 import avatar from '../assets/image-avatar.png';
 import menuicon from '../assets/icon-menu.svg';
 import closeicon from '../assets/icon-close.svg';
+import Modal from './Modal';
+import Cart from './Cart';
 
 import logo from '../assets/logo.svg';
-const Navbar: React.FC = () => {
-  const [nav, setNav] = useState(true);
 
+type modalProps = {
+  AddCart?: number;
+};
+const Navbar: React.FC<modalProps> = ({ AddCart }: modalProps) => {
+  const [nav, setNav] = useState(true);
+  const [Openmodal, setOpenModal] = useState(false);
   const navBehavior = () => {
     setNav(!nav);
   };
@@ -34,7 +40,22 @@ const Navbar: React.FC = () => {
         <img className="md:hidden md:p-5 " src={logo} alt="logo"></img>
       </div>
       <div className="flex justify-end items-center m-5">
-        <img className="pr-0" src={iconcart} alt="Iconcart"></img>
+        <img
+          className="pr-0"
+          src={iconcart}
+          alt="Iconcart"
+          onClick={() => {
+            if (Openmodal) {
+              setOpenModal(false);
+
+              console.log('false');
+            } else setOpenModal(true);
+          }}
+        ></img>
+
+        {Openmodal && <Modal />}
+        {/* {Openmodal && <Modal CloseModal={setOpenModal} />} */}
+
         <img
           className="ml-5 w-[25px] h-[25px] "
           src={avatar}
