@@ -8,10 +8,10 @@ import Cart from './Cart';
 
 import logo from '../assets/logo.svg';
 
-type modalProps = {
-  AddCart?: number;
+type Props = {
+  numberOfItems: number;
 };
-const Navbar: React.FC<modalProps> = ({ AddCart }: modalProps) => {
+const Navbar: React.FC<Props> = ({ numberOfItems }) => {
   const [nav, setNav] = useState(true);
   const [Openmodal, setOpenModal] = useState(false);
   const navBehavior = () => {
@@ -53,7 +53,7 @@ const Navbar: React.FC<modalProps> = ({ AddCart }: modalProps) => {
           }}
         ></img>
 
-        {Openmodal && <Modal />}
+        {Openmodal && <Modal numberOfItems={numberOfItems} />}
         {/* {Openmodal && <Modal CloseModal={setOpenModal} />} */}
 
         <img
@@ -61,7 +61,7 @@ const Navbar: React.FC<modalProps> = ({ AddCart }: modalProps) => {
           src={avatar}
           alt="avatar"
         ></img>
-      </div>
+      </div>      
     </div>
   );
 };

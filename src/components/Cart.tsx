@@ -10,21 +10,20 @@ import Modal from './Modal';
 import { ReactComponent as MinusIcon } from '../assets/icon-minus.svg';
 import { ReactComponent as CartIcon } from '../assets/icon-cart.svg';
 
-const Cart: React.FC = () => {
-  //console.log(BigImage);
+type Props = {
+  numberOfItems: number;
+  setNumberOfItems: (num: number) => void;
+}
 
+const Cart: React.FC<Props> = ({numberOfItems, setNumberOfItems}) => {
   const [thumbnail, setThumbnail] = useState('');
   const [mainImage, setmainImage] = useState(0);
-  const [addCart, setaddCart] = useState(0);
 
   console.log(mainImage);
   const CartBehavior = (image: any, index: number) => {
     setThumbnail(image);
     setmainImage(index);
   };
-  useEffect(() => {
-    console.log({ addCart });
-  }, [addCart]);
 
   return (
     <div className="lg:grid grid-cols-2 max-w-[1240px] mx-auto lg:mt-[96px]">
@@ -122,22 +121,21 @@ const Cart: React.FC = () => {
                 <MinusIcon
                   fill="black"
                   onClick={() => {
-                    if (addCart > 0) {
-                      setaddCart(addCart - 1);
+                    if (numberOfItems > 0) {
+                      setNumberOfItems(numberOfItems - 1);
                     }
                   }}
                 />
               </div>
               <div>
-                <p className="text-center">{addCart}</p>
+                <p className="text-center">{numberOfItems}</p>
               </div>
               <div className="my-auto">
                 <img
                   className=""
                   src={plusIcon}
                   onClick={() => {
-                    setaddCart(addCart + 1);
-                    <Modal AddCart={addCart} />;
+                    setNumberOfItems(numberOfItems + 1);
                   }}
                 ></img>
               </div>
@@ -146,7 +144,7 @@ const Cart: React.FC = () => {
               className="w-full lg:col-start-2 col-span-3 p-5 my-5 bg-orange-text rounded-md flex justify-center "
               onClick={() => {
                 console.log('click');
-                console.log(addCart);
+                console.log(numberOfItems);
               }}
             >
               <div className="mr-5 ">
@@ -154,7 +152,6 @@ const Cart: React.FC = () => {
               </div>
               <p className="text-xl text-white">Add to cart</p>
             </button>
-            <Modal AddCart={addCart} />;
           </div>
         </div>
       </div>
