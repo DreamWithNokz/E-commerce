@@ -1,27 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import image1 from '../assets/image-product-1.jpg';
 import Appdata, { BigImage } from '../Views/Appdata';
 
 import nextIcon from '../assets/icon-next.svg';
 import prevIcon from '../assets/icon-previous.svg';
-
+import Navbar from './Navbar';
 import plusIcon from '../assets/icon-plus.svg';
-
+import Modal from './Modal';
 import { ReactComponent as MinusIcon } from '../assets/icon-minus.svg';
 import { ReactComponent as CartIcon } from '../assets/icon-cart.svg';
 
 const Cart: React.FC = () => {
-  console.log(BigImage);
-  const [photo, setPhoto] = useState(true);
+  //console.log(BigImage);
+
   const [thumbnail, setThumbnail] = useState('');
   const [mainImage, setmainImage] = useState(0);
+  const [addCart, setaddCart] = useState(0);
 
+  console.log(mainImage);
   const CartBehavior = (image: any, index: number) => {
     setThumbnail(image);
     setmainImage(index);
-    // console.log(index);
-    setPhoto(!photo);
   };
+  useEffect(() => {
+    console.log({ addCart });
+  }, [addCart]);
 
   return (
     <div className="lg:grid grid-cols-2 max-w-[1240px] mx-auto lg:mt-[96px]">
@@ -42,9 +45,9 @@ const Cart: React.FC = () => {
                   }}
                   src={image}
                   className={
-                    thumbnail === image && photo
-                      ? 'w-[70px] h-[70px] rounded-xl cursor-pointer  outline outline-pink-500'
-                      : 'w-[70px] h-[70px] rounded-xl cursor-pointer'
+                    thumbnail === image
+                      ? 'w-[70px] h-[70px] rounded-xl cursor-pointer bg-black outline outline-orange-500 opacity-75  '
+                      : 'w-[70px] h-[70px] rounded-xl cursor-pointer '
                   }
                 ></img>
                 {/* <img
@@ -53,73 +56,45 @@ const Cart: React.FC = () => {
                 ></img> */}
               </div>
             ))}
-
-            {/* <div onClick={CartBehavior}>
-              {thumbnail ? (
-                <img
-                  className="w-[70px] h-[70px] rounded-xl cursor-pointer"
-                  src={ImageThumbnails}
-                ></img>
-              ) : (
-                <img
-                  className="w-[70px] h-[70px] rounded-xl cursor-pointer outline outline-pink-500"
-                  src={ImageThumbnails}
-                ></img>
-              )}
-            </div> */}
-
-            {/* <div onClick={CartBehavior}>
-              {thumbnail ? (
-                <img
-                  className="w-[70px] h-[70px] rounded-xl cursor-pointer"
-                  src={ImageThumbnail2}
-                ></img>
-              ) : (
-                <img
-                  className="w-[70px] h-[70px] rounded-xl cursor-pointer outline outline-pink-500"
-                  src={ImageThumbnail2}
-                ></img>
-              )}
-            </div>
-            {thumbnail ? (
-              <img
-                className="w-[70px] h-[70px] rounded-xl cursor-pointer"
-                src={ImageThumbnail3}
-              ></img>
-            ) : (
-              <img
-                className="w-[70px] h-[70px] rounded-xl cursor-pointer outline outline-pink-500"
-                src={ImageThumbnail3}
-              ></img>
-            )}
-            {thumbnail ? (
-              <img
-                className="w-[70px] h-[70px] rounded-xl cursor-pointer"
-                src={ImageThumbnail4}
-              ></img>
-            ) : (
-              <img
-                className="w-[70px] h-[70px] rounded-xl cursor-pointer outline outline-pink-500"
-                src={ImageThumbnail4}
-              ></img>
-            )} */}
+            ;
           </div>
         </div>
       </div>
 
       <div className="flex flex-col w-full">
         <div className="mt-0 lg:hidden my-5 flex relative">
-          <img className="w-full h-[450px] relative" src={image1}></img>
+          <img
+            className="w-full h-[450px] relative"
+            src={BigImage[mainImage]}
+          ></img>
         </div>
         <div className=" absolute h-[50px] w-[50px] mt-[50%] -translate-x-0 translate-y-[-50%] right-5 rounded-full bg-white/80 cursor-pointer">
-          <img className="mx-auto mt-[30%]" src={nextIcon}></img>
+          <img
+            className="mx-auto mt-[30%]"
+            src={nextIcon}
+            onClick={() => {
+              if (mainImage < 3) {
+                setmainImage(mainImage + 1);
+              }
+            }}
+          ></img>
         </div>
 
         <div className=" absolute h-[50px] w-[50px] mt-[50%] -translate-x-0 translate-y-[-50%] left-5 rounded-full bg-white/80 cursor-pointer">
-          <img className="mx-auto mt-[30%]" src={prevIcon}></img>
+          <img
+            className="mx-auto mt-[30%]"
+            src={prevIcon}
+            onClick={() => {
+              if (mainImage > 0) {
+                setmainImage(mainImage - 1);
+              } else {
+                mainImage == 0;
+              }
+            }}
+          ></img>
         </div>
 
-        <div className=" px-5 text-wrap">
+        <div className=" px-5 text-wrap lg:pt-[10%]">
           <p className="text-orange-text font-bold">SNEAKER COMPANY</p>
           <h1 className="text-4xl font-bold">Fall Limited Edition Sneakers</h1>
           <p className="pt-[30px]">
@@ -144,22 +119,42 @@ const Cart: React.FC = () => {
           <div className="lg:grid grid-cols-3 gap-x-4">
             <div className="lg:col-start-1 p-5 my-5 bg-gray-100 rounded-md flex justify-between ">
               <div className="my-auto">
-                <MinusIcon fill="black" />
+                <MinusIcon
+                  fill="black"
+                  onClick={() => {
+                    if (addCart > 0) {
+                      setaddCart(addCart - 1);
+                    }
+                  }}
+                />
               </div>
               <div>
-                <p className="text-center">0</p>
+                <p className="text-center">{addCart}</p>
               </div>
               <div className="my-auto">
-                <img className="" src={plusIcon}></img>
+                <img
+                  className=""
+                  src={plusIcon}
+                  onClick={() => {
+                    setaddCart(addCart + 1);
+                    <Modal AddCart={addCart} />;
+                  }}
+                ></img>
               </div>
             </div>
-
-            <div className="lg:col-start-2 col-span-3 p-5 my-5 bg-orange-text rounded-md flex justify-center ">
-              <div className="mr-5 fill-slate-100">
+            <button
+              className="w-full lg:col-start-2 col-span-3 p-5 my-5 bg-orange-text rounded-md flex justify-center "
+              onClick={() => {
+                console.log('click');
+                console.log(addCart);
+              }}
+            >
+              <div className="mr-5 ">
                 <CartIcon stroke="white" fill="red" />
               </div>
               <p className="text-xl text-white">Add to cart</p>
-            </div>
+            </button>
+            <Modal AddCart={addCart} />;
           </div>
         </div>
       </div>
